@@ -1,0 +1,67 @@
+name: flutter_supabase_app
+description: >-
+  Aplicación educativa de gestión de tareas estilo mini-Trello.
+  Demuestra integración Flutter + Supabase con patrón MVVM.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # ─── Supabase ─────────────────────────────────────────────────────────────────
+  # SDK oficial de Supabase para Flutter.
+  # Incluye: Auth (JWT), Database (PostgREST), Realtime, Storage.
+  # Docs: https://supabase.com/docs/reference/dart/introduction
+  supabase_flutter: ^2.7.0
+
+  # ─── Gestión de estado — MVVM ─────────────────────────────────────────────────
+  # Provider expone ChangeNotifier (ViewModel) al árbol de widgets.
+  # Patrón: View (Screen) → consume → ViewModel (ChangeNotifier)
+  #                                  → llama →  Repository → Supabase
+  # Docs: https://pub.dev/packages/provider
+  provider: ^6.1.2
+
+  # ─── Navegación declarativa ───────────────────────────────────────────────────
+  # GoRouter: enrutador oficial de Flutter, soporta deep links y guards.
+  # Se usa para redirigir automáticamente según el estado de autenticación.
+  # Docs: https://pub.dev/packages/go_router
+  go_router: ^14.3.0
+
+  # ─── Archivos e imágenes ──────────────────────────────────────────────────────
+  image_picker: ^1.1.2     # Cámara o galería → portada de tarea
+  file_picker: ^8.1.2      # Seleccionar PDF / DOCX → adjunto de tarea
+
+  # ─── UI ──────────────────────────────────────────────────────────────────────
+  cached_network_image: ^3.4.1  # Cachea imágenes descargadas de Supabase Storage
+  google_fonts: ^6.2.1          # Inter / Poppins para interfaz moderna
+  shimmer: ^3.0.0               # Skeleton loading mientras cargan los datos
+
+  # ─── Utilidades ───────────────────────────────────────────────────────────────
+  intl: ^0.19.0      # Formato de fechas localizado (es_MX, en_US…)
+  uuid: ^4.5.1       # Genera IDs únicos para archivos subidos al Storage
+  timeago: ^3.7.0    # Fechas relativas: "hace 2 horas", "ayer"
+  path: ^1.9.0       # Extrae extensión de archivo (.pdf, .jpg…)
+  url_launcher: ^6.3.1  # Abre URLs de archivos en el navegador/lector
+
+  # ─── Variables de entorno ─────────────────────────────────────────────────────
+  # Carga SUPABASE_URL y SUPABASE_ANON_KEY desde el archivo .env
+  # ¡El .env NUNCA se sube al repositorio! Ver .gitignore
+  flutter_dotenv: ^5.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Assets declarados explícitamente para que Flutter los incluya en el bundle
+  assets:
+    - .env                  # Variables de entorno (URL y clave de Supabase)
+    - assets/images/        # Imágenes locales (logo, placeholders…)
