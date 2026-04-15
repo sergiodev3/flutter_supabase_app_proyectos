@@ -263,7 +263,11 @@ class _DropdownField<T> extends StatelessWidget {
             style: const TextStyle(fontSize: 13, color: Color(0xFF475569))),
         const SizedBox(height: 6),
         DropdownButtonFormField<T>(
-          value: value,
+          // 'value' fue deprecado en Flutter 3.33. Se reemplaza por 'initialValue'
+          // porque DropdownButtonFormField es un FormField: establece el valor
+          // inicial y luego gestiona su propio estado interno (igual que initialValue
+          // en TextFormField). Los cambios del usuario se capturan en onChanged.
+          initialValue: value,
           items: items,
           onChanged: onChanged,
           decoration: const InputDecoration(),

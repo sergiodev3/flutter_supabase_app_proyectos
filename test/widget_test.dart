@@ -1,30 +1,42 @@
-// This is a basic Flutter widget test.
+// test/widget_test.dart
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// ─── NOTA EDUCATIVA ──────────────────────────────────────────────────────────
+// El test original del contador fue generado automáticamente por Flutter
+// al crear el proyecto con `flutter create`. Ese test referenciaba `MyApp`,
+// que existía en el main.dart de ejemplo.
+//
+// Al reemplazar main.dart con nuestra `TaskBoardApp`, `MyApp` dejó de existir
+// y el test rompió. Esto es completamente normal en cualquier proyecto real:
+// el código de ejemplo se borra y los tests deben actualizarse.
+//
+// Este archivo contiene tests básicos que sí corresponden a nuestra app.
+// Para correrlos: flutter test
+// ─────────────────────────────────────────────────────────────────────────────
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:flutter_supabase_app/main.dart';
+import 'package:flutter_supabase_app/presentation/screens/splash/splash_screen.dart';
+import 'package:flutter_supabase_app/core/theme/app_theme.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  // ── Test de la pantalla Splash ─────────────────────────────────────────────
+  // La SplashScreen no depende de Supabase ni de providers, así que
+  // podemos renderizarla directamente en un test unitario de widget.
+  group('SplashScreen', () {
+    testWidgets('muestra el nombre de la app y un indicador de carga', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.light,
+          home: const SplashScreen(),
+        ),
+      );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      // Verifica que el nombre de la app esté presente
+      expect(find.text('TaskBoard'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      // Verifica que el indicador de progreso esté visible mientras carga
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    });
   });
 }
