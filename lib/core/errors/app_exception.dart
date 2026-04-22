@@ -41,8 +41,7 @@ class DatabaseException extends AppException {
 
 /// El recurso solicitado no existe en la base de datos.
 class NotFoundException extends AppException {
-  const NotFoundException(String resource)
-      : super('No se encontró: $resource');
+  const NotFoundException(String resource) : super('No se encontró: $resource');
 }
 
 // ── Storage ───────────────────────────────────────────────────────────────────

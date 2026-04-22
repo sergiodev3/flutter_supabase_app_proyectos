@@ -69,18 +69,23 @@ GoRouter createRouter({
       final isAuthenticated = user != null;
       final location = state.matchedLocation;
 
-      // Rutas que no requieren autenticación
+      // Desde splash siempre redirigimos según el estado de auth.
+      // Supabase restaura la sesión durante initialize(), por lo que
+      // currentUser ya está disponible cuando GoRouter evalúa esto.
+      if (location == AppRoutes.splash) {
+        return isAuthenticated ? AppRoutes.taskList : AppRoutes.login;
+      }
+
       final isPublicRoute = location == AppRoutes.login ||
-          location == AppRoutes.register ||
-          location == AppRoutes.splash;
+          location == AppRoutes.register;
 
       if (!isAuthenticated && !isPublicRoute) {
         // Usuario no autenticado intenta acceder a ruta protegida → login
         return AppRoutes.login;
       }
 
-      if (isAuthenticated && isPublicRoute && location != AppRoutes.splash) {
-        // Usuario ya autenticado intenta ir al login → lista de tareas
+      if (isAuthenticated && isPublicRoute) {
+        // Usuario ya autenticado intenta ir al login/register → lista de tareas
         return AppRoutes.taskList;
       }
 
